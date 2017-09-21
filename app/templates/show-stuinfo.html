@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+    学生信息
+{% endblock %}
+{% block content %}
+<ul class="list-group">
+    <li class="list-group-item">学号：{{ stuinfo.number }}</li>
+    <li class="list-group-item">姓名：{{ stuinfo.stu_name }}</li>
+    <li class="list-group-item">年级：{{ stuinfo.grade }}</li>
+    <li class="list-group-item">班级：{{ stuinfo.cla }}</li>
+</ul>
+     {% if current_user.is_authenticated %}
+    <div class="article-edit">
+        <a href="{{ url_for('admin.edit_stuinfo',id=stuinfo.id) }}">
+            <button type="button" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-pencil"></span>
+                编辑
+            </button>
+        </a>
+    </div>
+    {% endif %}
+<div class="entry-box submit-article">
+    <h4><strong>评价信息：</strong></h4>
+    <hr/>
+<table class="table table-hover">
+    <thead>
+        <th class="active">学期</th>
+        <th class="active">责任与担当</th>
+        <th class='active'>学习与探究</th>
+        <th class='active'>健康与生存</th>
+        <th class='active'>审美与人文</th>
+        <th class='active'>实践与创新</th>
+        <th class='active'>个性与发展</th>
+        <th class='active'>老师评语</th>
+        {% if current_user.is_authenticated %}
+        <th class='active'>操作</th>
+        {% endif %}
+
+
+    </thead>
+    <tbody>
+        {% for assess in assess %}
+
+            <!-- tr -->
+            <tr class="success">
+                <td>{{ assess.term }}</td>
+                <td>{{ assess.duty }}</td>
+                <td>{{ assess.study }}</td>
+                <td>{{ assess.health }}</td>
+                <td>{{ assess.taste }}</td>
+                <td>{{ assess.practice }}</td>
+                <td>{{ assess.personality }}</td>
+                <td>{{ assess.comment}}</td>
+                {% if current_user.is_authenticated %}
+            <td>
+                    <a href="{{ url_for('admin.delete_assess', id = assess.id) }}" class="btn btn-danger" role ="button">删除</a>
+            </td>
+            {% endif %}
+            </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+    {% if current_user.is_authenticated %}
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal"> ADD </button>
+{% endif %}
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel" align="center">添加评价</h4>
+      </div>
+
+      <div class="modal-body">
+          <div class="row">
+              <div class="col-md-8 col-md-offset-2"> {{ wtf.quick_form(form, form_type="horizontal") }} </div>
+          </div>
+      </div> <!-- modal body -->
+
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}

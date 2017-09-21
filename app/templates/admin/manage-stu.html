@@ -1,0 +1,56 @@
+{% extends 'admin/admin-base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+    学生管理
+{% endblock %}
+
+{% block admin_content %}
+    <div class="entry-box manage-articles">
+    <h4><strong>管理学生</strong></h4>
+    <hr/>
+        <div class="list-handle">
+            <form class="manage-articles" method="post" action="">
+                <div class="form-group">
+            <div class="row">
+              <div class="col-md-4 col-md-offset-2"> {{ wtf.quick_form(form) }} </div>
+            </div>
+        </div>
+            </form>
+        </div>
+        <div class="list-detials">
+            <form class="delete-articles" id="delArticlesForm" method="post">
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr class="table-header">
+                        <th>学号</th>
+                        <th>姓名</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for stuinfo in stuinfo %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('admin.show_stuinfo', id=stuinfo.id) }}" target="_blank">
+                                {{ stuinfo.number }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('admin.show_stuinfo', id=stuinfo.id) }}" target="_blank">
+                                {{ stuinfo.stu_name }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('admin.delete_stuinfo', id=stuinfo.id) }}" class="btn btn-danger" role ="button">删除</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
